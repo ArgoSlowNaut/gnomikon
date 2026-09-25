@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { categories } from '../lib/quotes';
+---
+<Base title="Topics">
+  <h1>Topics</h1>
+  <p class="lede">The virtues, the passions, and the life of prayer.</p>
+  <ul class="list">
+    {categories.map((c) => (
+      <li><a href={`/category/${c.slug}`}><span>{c.name}</span><span class="count">{c.quotes.length}</span></a></li>
+    ))}
+  </ul>
+</Base>

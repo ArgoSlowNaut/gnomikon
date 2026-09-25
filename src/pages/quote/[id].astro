@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import QuoteCard from '../../components/QuoteCard.astro';
+import { quotes, slugify } from '../../lib/quotes';
+
+export function getStaticPaths() {
+  return quotes.map((q) => ({ params: { id: q.id }, props: { quote: q } }));
+}
+const { quote } = Astro.props;
+const related = quotes.filter((q) => q.category === quote.category && q.id !== quote.id).slice(0, 5);
+---
+<Base title={`${quote.author}: ${quote.category}`} description={quote.text}>
+  <div class="quotes">
+    <QuoteCard quote={quote} />
+  </div>
+  {related.length > 0 && (
+    <section class="related">
+      <h2>More on <a href={`/category/${slugify(quote.category)}`}>{quote.category}</a></h2>
+      <div class="quotes">
+        {related.map((q) => <QuoteCard quote={q} />)}
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .related { margin-top: 40px; }
+  h2 { font-family: var(--serif); font-weight: 500; font-size: 1.5rem; margin: 0 0 16px; }
+</style>

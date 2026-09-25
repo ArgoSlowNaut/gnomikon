@@ -1,0 +1,24 @@
+---
+import { citation, slugify, type Quote } from '../lib/quotes';
+
+interface Props {
+  quote: Quote;
+}
+const { quote } = Astro.props;
+---
+<article class="quote-card">
+  <blockquote class="quote-text">{quote.text}</blockquote>
+  <footer class="quote-meta">
+    <a class="quote-author" href={`/author/${slugify(quote.author)}`}>{quote.author}</a>
+    <span class="quote-source">
+      {quote.source.url ? <a href={quote.source.url} rel="noopener" target="_blank">{quote.source.work}</a> : <cite>{quote.source.work}</cite>}
+      {quote.source.reference && <span>, {quote.source.reference}</span>}
+    </span>
+  </footer>
+  <div class="quote-actions">
+    <a class="chip" href={`/category/${slugify(quote.category)}`}>{quote.category}</a>
+    <span class="spacer"></span>
+    <button type="button" class="action copy" data-copy={`“${quote.text}”\n— ${citation(quote)}`}>Copy</button>
+    <a class="action" href={`/quote/${quote.id}`}>Share link</a>
+  </div>
+</article>

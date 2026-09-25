@@ -1,0 +1,57 @@
+[
+  {
+    "text": "For nothing is so acceptable to God as to number one's self with the last. This is a first principle of all practical wisdom.",
+    "author": "St. John Chrysostom",
+    "source": {
+      "work": "Homilies on the Gospel of Matthew",
+      "reference": "Homily 3, §8",
+      "url": "https://ccel.org/ccel/schaff/npnf110"
+    },
+    "category": "Humility",
+    "tags": ["pride", "lowliness"]
+  },
+  {
+    "text": "For the secure storehouse of good works is to forget our good works.",
+    "author": "St. John Chrysostom",
+    "source": {
+      "work": "Homilies on the Gospel of Matthew",
+      "reference": "Homily 3, §7",
+      "url": "https://ccel.org/ccel/schaff/npnf110"
+    },
+    "category": "Humility",
+    "tags": ["vainglory", "almsgiving", "good works"]
+  },
+  {
+    "text": "It is better for a man to be silent and be [a Christian], than to talk and not to be one. It is good to teach, if he who speaks also acts.",
+    "author": "St. Ignatius of Antioch",
+    "source": {
+      "work": "Epistle to the Ephesians",
+      "reference": "Ch. 15",
+      "url": "https://ccel.org/ccel/schaff/anf01"
+    },
+    "category": "Silence",
+    "tags": ["hypocrisy", "teaching", "deeds"]
+  },
+  {
+    "text": "For He was made man that we might be made God; and He manifested Himself by a body that we might receive the idea of the unseen Father; and He endured the insolence of men that we might inherit immortality.",
+    "author": "St. Athanasius the Great",
+    "source": {
+      "work": "On the Incarnation of the Word",
+      "reference": "Ch. 54, §3",
+      "url": "https://ccel.org/ccel/schaff/npnf204"
+    },
+    "category": "Theosis",
+    "tags": ["incarnation", "deification", "salvation"]
+  },
+  {
+    "text": "For that which He has not assumed He has not healed; but that which is united to His Godhead is also saved.",
+    "author": "St. Gregory the Theologian",
+    "source": {
+      "work": "Epistle 101, To Cledonius the Priest Against Apollinarius",
+      "reference": "",
+      "url": "https://ccel.org/ccel/schaff/npnf207"
+    },
+    "category": "Incarnation",
+    "tags": ["christology", "salvation", "healing"]
+  }
+]

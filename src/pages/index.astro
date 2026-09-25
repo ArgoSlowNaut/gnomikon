@@ -1,0 +1,247 @@
+---
+import Base from '../layouts/Base.astro';
+import Cross from '../components/Cross.astro';
+import { quotes, categories, authors } from '../lib/quotes';
+
+// Everyday situations, each mapped to a search. The synonym list in
+// src/lib/search.ts widens each word to the older terms the Fathers use.
+const situations = [
+  { label: 'When I am angry', q: 'anger' },
+  { label: 'When I am anxious', q: 'worry' },
+  { label: 'When I cannot pray', q: 'prayer' },
+  { label: 'When I have fallen again', q: 'repentance' },
+  { label: 'When someone has wronged me', q: 'forgive' },
+  { label: 'When I think highly of myself', q: 'pride' },
+  { label: 'When I am grieving', q: 'grief' },
+  { label: 'When I feel far from God', q: 'despair' },
+];
+---
+<Base>
+  <section class="hero">
+    <Cross size={64} letters class="hero-cross" />
+    <p class="hero-greek" lang="grc">Ἀποφθέγματα Πατέρων καὶ Μητέρων τῆς Ἐκκλησίας</p>
+    <h1>Sayings of the Church Fathers and Church Mothers</h1>
+  </section>
+
+  <form class="search" role="search" onsubmit="return false">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+      <input id="q" type="search" placeholder="Anger, prayer, forgiveness…" autocomplete="off" aria-label="Search the sayings" />
+      <kbd class="hint" aria-hidden="true">/</kbd>
+    </div>
+    <div class="filters">
+      <select id="category" aria-label="Topic">
+        <option value="">Every topic</option>
+        {categories.map((c) => <option value={c.name}>{c.name} ({c.quotes.length})</option>)}
+      </select>
+      <select id="author" aria-label="Saint">
+        <option value="">All saints</option>
+        {authors.map((a) => <option value={a.name}>{a.name} ({a.quotes.length})</option>)}
+      </select>
+      <button type="button" id="clear" class="btn btn-quiet" hidden>Clear</button>
+    </div>
+  </form>
+
+  <div class="situations" aria-label="Common situations">
+    {situations.map((s) => <button type="button" class="situation" data-q={s.q}>{s.label}</button>)}
+  </div>
+
+  <div class="fleuron" aria-hidden="true">✥</div>
+
+  <div class="results-head">
+    <p id="status" class="status" aria-live="polite"></p>
+    <button type="button" id="random" class="btn btn-quiet">Open a saying at random</button>
+  </div>
+  <div id="results" class="quotes"></div>
+  <button type="button" id="more" class="btn more" hidden>Show more sayings</button>
+
+  <details class="tips">
+    <summary>How to search</summary>
+    <ul>
+      <li>Type as you would speak: <em>worry</em>, <em>lust</em>, <em>money</em>, <em>death</em>. Everyday words are matched to older ones.</li>
+      <li>Put words in double quotes for an exact phrase: <code>"storehouse of good works"</code>.</li>
+      <li>Spelling slips are forgiven, and old forms like <em>hath</em> and <em>thou</em> are understood.</li>
+      <li>Every search has its own address, so you can bookmark or send it to someone.</li>
+    </ul>
+  </details>
+</Base>
+
+<style>
+  .hero { text-align: center; margin-bottom: 26px; }
+  :global(.hero-cross) { color: var(--gold); margin-bottom: 6px; }
+  .hero-greek { font-family: var(--didot); color: var(--cinnabar); letter-spacing: 0.06em; margin: 0 0 4px; font-size: 1.05rem; }
+  .hero .lede { max-width: 560px; margin: 8px auto 0; }
+
+  .search { display: grid; gap: 10px; margin-bottom: 18px; }
+  .search-box { position: relative; }
+  .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+  #q {
+    width: 100%; font: inherit; font-size: 1.2rem; padding: 14px 44px 14px 46px;
+    border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); color: var(--ink);
+    box-shadow: inset 0 1px 3px rgba(60, 40, 10, 0.08);
+  }
+  #q::placeholder { color: var(--muted); font-style: italic; opacity: 0.8; }
+  #q:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .hint {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    font-family: var(--serif); font-size: 0.85rem; color: var(--muted);
+    border: 1px solid var(--rule); border-radius: 3px; padding: 0 6px;
+  }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  select, .btn {
+    font: inherit; font-size: 1rem; padding: 7px 12px; border-radius: 4px;
+    border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+  }
+  select { flex: 1 1 200px; min-width: 0; }
+  .btn { cursor: pointer; }
+  .btn:hover { border-color: var(--gold); }
+  .btn-quiet { background: none; border-color: transparent; color: var(--lapis); font-style: italic; padding-left: 4px; padding-right: 4px; }
+  .btn-quiet:hover { color: var(--cinnabar); border-color: transparent; }
+
+  .situations { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .situation {
+    font: inherit; font-size: 1rem; font-style: italic; cursor: pointer;
+    padding: 5px 14px; border-radius: 999px; border: 1px solid var(--gold-soft);
+    background: var(--paper); color: var(--ink);
+  }
+  .situation:hover { border-color: var(--gold); color: var(--cinnabar); }
+  .situation[aria-pressed='true'] { background: var(--lapis); border-color: var(--lapis); color: var(--paper); }
+
+  .results-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .status { color: var(--muted); margin: 0; font-style: italic; }
+  .more { display: block; margin: 26px auto 0; }
+  :global(.empty) { text-align: center; color: var(--muted); padding: 28px 16px; background: var(--paper); border: 1px dashed var(--rule); border-radius: 4px; }
+
+  .tips { margin-top: 40px; color: var(--muted); font-size: 1rem; }
+  .tips summary { cursor: pointer; color: var(--lapis); font-variant: small-caps; letter-spacing: 0.05em; }
+  .tips ul { padding-left: 20px; }
+  code { font-size: 0.85em; background: var(--lapis-soft); padding: 1px 5px; border-radius: 3px; }
+</style>
+
+<script>
+  import { quotes, citation, slugify, type Quote } from '../lib/quotes';
+  import { createSearch } from '../lib/search';
+
+  const PAGE = 30;
+  const search = createSearch(quotes);
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const q = $<HTMLInputElement>('q');
+  const category = $<HTMLSelectElement>('category');
+  const author = $<HTMLSelectElement>('author');
+  const results = $('results');
+  const status = $('status');
+  const more = $<HTMLButtonElement>('more');
+  const clear = $<HTMLButtonElement>('clear');
+  const situations = [...document.querySelectorAll<HTMLButtonElement>('.situation')];
+
+  let current: Quote[] = [];
+  let shown = 0;
+  let terms: string[] = [];
+
+  const esc = (s: string) =>
+    s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
+  function highlight(text: string): string {
+    const safe = esc(text);
+    const words = terms.filter((t) => t.length > 1).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    if (!words.length) return safe;
+    return safe.replace(new RegExp(`\\b(${words.join('|')})\\w*`, 'gi'), '<mark>$&</mark>');
+  }
+
+  // Keep in step with src/components/QuoteCard.astro.
+  function card(x: Quote): string {
+    const work = x.source.url
+      ? `<a href="${esc(x.source.url)}" rel="noopener" target="_blank">${esc(x.source.work)}</a>`
+      : `<cite>${esc(x.source.work)}</cite>`;
+    return `<article class="quote-card">
+      <blockquote class="quote-text">${highlight(x.text)}</blockquote>
+      <footer class="quote-meta">
+        <a class="quote-author" href="/author/${slugify(x.author)}">${esc(x.author)}</a>
+        <span class="quote-source">${work}${x.source.reference ? `, ${esc(x.source.reference)}` : ''}</span>
+      </footer>
+      <div class="quote-actions">
+        <a class="chip" href="/category/${slugify(x.category)}">${esc(x.category)}</a>
+        <span class="spacer"></span>
+        <button type="button" class="action copy" data-copy="${esc(`“${x.text}”\n— ${citation(x)}`)}">Copy</button>
+        <a class="action" href="/quote/${x.id}">Share link</a>
+      </div>
+    </article>`;
+  }
+
+  function renderMore() {
+    const next = current.slice(shown, shown + PAGE);
+    results.insertAdjacentHTML('beforeend', next.map(card).join(''));
+    shown += next.length;
+    more.hidden = shown >= current.length;
+  }
+
+  function run(updateUrl = true) {
+    const out = search(q.value, { category: category.value, author: author.value });
+    current = out.results;
+    terms = out.terms;
+    shown = 0;
+    results.innerHTML = '';
+    renderMore();
+
+    const active = q.value.trim() || category.value || author.value;
+    const n = current.length;
+    status.textContent = !active
+      ? `All ${n} sayings in the collection`
+      : n ? `${n} saying${n === 1 ? '' : 's'} found` : '';
+    if (active && !n) {
+      results.innerHTML = `<p class="empty">Nothing found yet. The collection is still growing.<br>Try a simpler word, or clear the filters.</p>`;
+    }
+    clear.hidden = !active;
+    const word = q.value.trim().toLowerCase();
+    situations.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.q === word)));
+
+    if (updateUrl) {
+      const params = new URLSearchParams();
+      if (q.value.trim()) params.set('q', q.value.trim());
+      if (category.value) params.set('category', category.value);
+      if (author.value) params.set('author', author.value);
+      const qs = params.toString();
+      history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+    }
+  }
+
+  // Restore state from the URL so searches can be bookmarked and shared.
+  const params = new URLSearchParams(location.search);
+  q.value = params.get('q') ?? '';
+  category.value = params.get('category') ?? '';
+  author.value = params.get('author') ?? '';
+  run(false);
+
+  let timer: number | undefined;
+  q.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = window.setTimeout(run, 120);
+  });
+  category.addEventListener('change', () => run());
+  author.addEventListener('change', () => run());
+  more.addEventListener('click', renderMore);
+  clear.addEventListener('click', () => {
+    q.value = category.value = author.value = '';
+    run();
+    q.focus();
+  });
+  situations.forEach((b) =>
+    b.addEventListener('click', () => {
+      q.value = q.value.trim().toLowerCase() === b.dataset.q ? '' : b.dataset.q!;
+      run();
+    }),
+  );
+  $('random').addEventListener('click', () => {
+    const pick = quotes[Math.floor(Math.random() * quotes.length)];
+    location.href = `/quote/${pick.id}`;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== q) {
+      e.preventDefault();
+      q.focus();
+    }
+  });
+</script>

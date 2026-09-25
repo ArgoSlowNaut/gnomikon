@@ -1,0 +1,27 @@
+---
+// Greek cross with the traditional IC XC NIKA ("Jesus Christ conquers").
+interface Props {
+  size?: number;
+  letters?: boolean;
+  class?: string;
+}
+const { size = 28, letters = false, class: className } = Astro.props;
+---
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 100 100"
+  aria-hidden="true"
+  fill="currentColor"
+>
+  <path d="M42 8h16l-2 30 30-2v16l-30-2 2 40H42l2-40-30 2V36l30 2z" />
+  {letters && (
+    <g font-family="'GFS Didot', serif" font-size="15" text-anchor="middle">
+      <text x="24" y="28">IC</text>
+      <text x="76" y="28">XC</text>
+      <text x="24" y="74">NI</text>
+      <text x="76" y="74">KA</text>
+    </g>
+  )}
+</svg>

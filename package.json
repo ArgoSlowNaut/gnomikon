@@ -1,0 +1,16 @@
+{
+  "name": "gnomikon",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run validate && astro build",
+    "preview": "astro preview",
+    "validate": "node scripts/validate-quotes.mjs"
+  },
+  "dependencies": {
+    "astro": "^7.3.5",
+    "minisearch": "^7.2.0"
+  }
+}

@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { authors } from '../lib/quotes';
+---
+<Base title="Saints">
+  <h1>Saints</h1>
+  <p class="lede">The Church Fathers and Church Mothers whose words are gathered here.</p>
+  <ul class="list">
+    {authors.map((a) => (
+      <li><a href={`/author/${a.slug}`}><span>{a.name}</span><span class="count">{a.quotes.length}</span></a></li>
+    ))}
+  </ul>
+</Base>

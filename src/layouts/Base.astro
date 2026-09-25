@@ -1,0 +1,219 @@
+---
+import Cross from '../components/Cross.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = 'Sayings of the Orthodox Church Fathers and Church Mothers, in English, with practical search.' } = Astro.props;
+const fullTitle = title ? `${title} · Gnomikon` : 'Gnomikon · Sayings of the Church Fathers and Mothers';
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=GFS+Didot&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a href="/" class="brand">
+          <Cross size={30} class="brand-cross" />
+          <span class="brand-text">
+            <span class="brand-name">Gnomikon</span>
+            <span class="brand-greek" lang="grc">Γνωμικόν</span>
+          </span>
+        </a>
+        <nav aria-label="Main">
+          <a href="/" aria-current={path === '/' ? 'page' : undefined}>Search</a>
+          <a href="/categories" aria-current={path.startsWith('/categor') ? 'page' : undefined}>Topics</a>
+          <a href="/authors" aria-current={path.startsWith('/author') ? 'page' : undefined}>Saints</a>
+        </nav>
+      </div>
+      <div class="meander" aria-hidden="true"></div>
+    </header>
+
+    <main class="wrap">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="meander" aria-hidden="true"></div>
+      <div class="wrap footer-inner">
+        <p class="doxology">“Glory to God for all things.”</p>
+        <p class="doxology-by">— the last words of St. John Chrysostom</p>
+        <p class="fine">Each saying links to the book it comes from.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --paper: #fbf6ea;
+    --bg: #f3ead7;
+    --ink: #2b2118;
+    --muted: #6f5f4d;
+    --rule: #dccdb0;
+    --lapis: #1f3a6b;
+    --lapis-soft: #e3e8f1;
+    --cinnabar: #a8321e;
+    --gold: #b0842a;
+    --gold-soft: #e2cf9f;
+    --mark: #f2dc9b;
+    --didot: 'GFS Didot', 'EB Garamond', Georgia, serif;
+    --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #18213a;
+      --bg: #10172b;
+      --ink: #efe5cf;
+      --muted: #b3a68d;
+      --rule: #34405e;
+      --lapis: #9db7e8;
+      --lapis-soft: #23304f;
+      --cinnabar: #e8836b;
+      --gold: #d9b45a;
+      --gold-soft: #5a4b27;
+      --mark: #5d4c1c;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.55;
+  }
+  a { color: var(--lapis); text-underline-offset: 3px; }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 16px; }
+
+  /* Greek key band, recolored through a mask so it follows the theme. */
+  .meander {
+    height: 14px;
+    background: var(--gold);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='14'%3E%3Cpath d='M0 13.25H16M0 .75H16M2 13V3.5H12V10H5.5V6.5H9' fill='none' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='14'%3E%3Cpath d='M0 13.25H16M0 .75H16M2 13V3.5H12V10H5.5V6.5H9' fill='none' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x;
+    opacity: 0.8;
+  }
+
+  .site-header { background: var(--paper); }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; padding-top: 14px; padding-bottom: 12px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+  .brand-cross { color: var(--gold); }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+  .brand-name { font-family: var(--didot); font-size: 1.6rem; letter-spacing: 0.02em; }
+  .brand-greek { font-family: var(--didot); font-size: 0.85rem; color: var(--cinnabar); letter-spacing: 0.08em; }
+  nav { display: flex; gap: 2px; }
+  nav a {
+    color: var(--muted); text-decoration: none; padding: 4px 10px;
+    font-variant: small-caps; letter-spacing: 0.06em; font-size: 1.05rem; border-bottom: 2px solid transparent;
+  }
+  nav a:hover { color: var(--ink); }
+  nav a[aria-current='page'] { color: var(--lapis); border-bottom-color: var(--gold); }
+
+  main { padding-top: 36px; padding-bottom: 56px; min-height: 70vh; }
+  h1 { font-family: var(--didot); font-weight: 400; font-size: 2.3rem; line-height: 1.15; margin: 0 0 6px; }
+  h2 { font-family: var(--didot); font-weight: 400; font-size: 1.5rem; margin: 0 0 14px; }
+  .lede { color: var(--muted); margin: 0 0 28px; font-size: 1.1rem; }
+  .fleuron { display: flex; align-items: center; gap: 12px; color: var(--gold); margin: 36px 0 20px; }
+  .fleuron::before, .fleuron::after { content: ''; flex: 1; height: 1px; background: var(--gold-soft); }
+
+  .site-footer { background: var(--paper); margin-top: 24px; }
+  .footer-inner { padding-top: 26px; padding-bottom: 32px; text-align: center; }
+  .doxology { font-family: var(--didot); font-size: 1.35rem; margin: 0; }
+  .doxology-by { margin: 2px 0 14px; color: var(--muted); font-style: italic; }
+  .fine { margin: 0; color: var(--muted); font-size: 0.85rem; }
+
+  .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+  .list a {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 16px;
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; text-decoration: none; color: var(--ink);
+  }
+  .list a:hover { border-color: var(--gold); }
+  .list a span:first-child { font-size: 1.1rem; }
+  .count { color: var(--muted); font-variant-numeric: oldstyle-nums; font-size: 0.95rem; }
+
+  .quotes { display: grid; gap: 22px; }
+  mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1px; }
+
+  /* A saying, set like a page from an illuminated book. */
+  .quote-card {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    outline: 1px solid var(--gold-soft);
+    outline-offset: -7px;
+    border-radius: 3px;
+    padding: 30px 32px 22px;
+    box-shadow: 0 1px 0 var(--rule), 0 8px 24px -18px rgba(60, 40, 10, 0.5);
+  }
+  .quote-text { font-size: 1.35rem; line-height: 1.55; margin: 0 0 16px; }
+  .quote-text::first-letter {
+    font-family: var(--didot);
+    color: var(--cinnabar);
+    font-size: 1.9em;
+    line-height: 1;
+    padding-right: 1px;
+  }
+  .quote-meta { display: flex; flex-direction: column; gap: 1px; }
+  .quote-author {
+    color: var(--lapis); text-decoration: none; font-variant: small-caps; letter-spacing: 0.05em; font-size: 1.1rem; font-weight: 500;
+  }
+  .quote-author::before { content: '— '; color: var(--gold); }
+  .quote-author:hover { text-decoration: underline; }
+  .quote-source { color: var(--muted); font-size: 0.98rem; font-style: italic; }
+  .quote-source a { color: inherit; text-decoration-color: var(--gold-soft); }
+  .quote-source cite { font-style: inherit; }
+  .quote-actions { display: flex; align-items: center; gap: 6px; margin-top: 18px; padding-top: 12px; border-top: 1px dotted var(--rule); flex-wrap: wrap; }
+  .spacer { flex: 1; }
+  .chip {
+    display: inline-block; padding: 1px 12px; border-radius: 999px; font-size: 0.95rem;
+    background: var(--lapis-soft); color: var(--lapis); text-decoration: none; border: 1px solid transparent;
+    font-variant: small-caps; letter-spacing: 0.04em;
+  }
+  .chip:hover { border-color: var(--lapis); }
+  .action {
+    font: inherit; font-size: 0.92rem; color: var(--muted); background: none; border: none;
+    padding: 2px 6px; cursor: pointer; text-decoration: none; font-style: italic;
+  }
+  .action:hover { color: var(--cinnabar); }
+
+  @media (max-width: 560px) {
+    body { font-size: 18px; }
+    h1 { font-size: 1.9rem; }
+    .quote-card { padding: 24px 20px 18px; }
+    .quote-text { font-size: 1.22rem; }
+  }
+</style>
+
+<script>
+  // Copy buttons, including ones rendered later by the search page.
+  document.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button.copy');
+    if (!btn) return;
+    try {
+      await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+      btn.textContent = 'Copied';
+    } catch {
+      btn.textContent = 'Could not copy';
+    }
+    setTimeout(() => (btn.textContent = 'Copy'), 1500);
+  });
+</script>
