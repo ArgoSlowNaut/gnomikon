@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import QuoteCard from '../../components/QuoteCard.astro';
-import { categories } from '../../lib/quotes';
+import { categories, link } from '../../lib/quotes';
 
 export function getStaticPaths() {
   return categories.map((c) => ({ params: { slug: c.slug }, props: { category: c } }));
@@ -12,7 +12,7 @@ const { category } = Astro.props;
   <h1>{category.name}</h1>
   <p class="lede">
     {category.quotes.length} saying{category.quotes.length === 1 ? '' : 's'} ·
-    <a href={`/?category=${encodeURIComponent(category.name)}`}>Search within this topic</a>
+    <a href={link(`?category=${encodeURIComponent(category.name)}`)}>Search within this topic</a>
   </p>
   <div class="quotes">
     {category.quotes.map((q) => <QuoteCard quote={q} />)}

@@ -14,6 +14,12 @@ export interface Quote {
   tags?: string[];
 }
 
+/** Internal link that respects the site's base path (e.g. /gnomikon/ on GitHub Pages). */
+export function link(path: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  return `${base}/${path.replace(/^\//, '')}`;
+}
+
 export function slugify(value: string): string {
   return value
     .normalize('NFKD')

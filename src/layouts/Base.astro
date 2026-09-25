@@ -1,5 +1,6 @@
 ---
 import Cross from '../components/Cross.astro';
+import { link } from '../lib/quotes';
 
 interface Props {
   title?: string;
@@ -7,7 +8,8 @@ interface Props {
 }
 const { title, description = 'Sayings of the Orthodox Church Fathers and Church Mothers, in English, with practical search.' } = Astro.props;
 const fullTitle = title ? `${title} · Gnomikon` : 'Gnomikon · Sayings of the Church Fathers and Mothers';
-const path = Astro.url.pathname;
+// Path without the base prefix, used to highlight the current menu item.
+const path = '/' + Astro.url.pathname.slice(import.meta.env.BASE_URL.length).replace(/^\//, '');
 ---
 <!doctype html>
 <html lang="en">
@@ -16,7 +18,7 @@ const path = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={link('favicon.svg')} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -27,7 +29,7 @@ const path = Astro.url.pathname;
   <body>
     <header class="site-header">
       <div class="wrap header-inner">
-        <a href="/" class="brand">
+        <a href={link('')} class="brand">
           <Cross size={30} class="brand-cross" />
           <span class="brand-text">
             <span class="brand-name">Gnomikon</span>
@@ -35,9 +37,9 @@ const path = Astro.url.pathname;
           </span>
         </a>
         <nav aria-label="Main">
-          <a href="/" aria-current={path === '/' ? 'page' : undefined}>Search</a>
-          <a href="/categories" aria-current={path.startsWith('/categor') ? 'page' : undefined}>Topics</a>
-          <a href="/authors" aria-current={path.startsWith('/author') ? 'page' : undefined}>Saints</a>
+          <a href={link('')} aria-current={path === '/' ? 'page' : undefined}>Search</a>
+          <a href={link('categories')} aria-current={path.startsWith('/categor') ? 'page' : undefined}>Topics</a>
+          <a href={link('authors')} aria-current={path.startsWith('/author') ? 'page' : undefined}>Saints</a>
         </nav>
       </div>
       <div class="meander" aria-hidden="true"></div>

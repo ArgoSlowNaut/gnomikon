@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import QuoteCard from '../../components/QuoteCard.astro';
-import { quotes, slugify } from '../../lib/quotes';
+import { link, quotes, slugify } from '../../lib/quotes';
 
 export function getStaticPaths() {
   return quotes.map((q) => ({ params: { id: q.id }, props: { quote: q } }));
@@ -15,7 +15,7 @@ const related = quotes.filter((q) => q.category === quote.category && q.id !== q
   </div>
   {related.length > 0 && (
     <section class="related">
-      <h2>More on <a href={`/category/${slugify(quote.category)}`}>{quote.category}</a></h2>
+      <h2>More on <a href={link(`category/${slugify(quote.category)}`)}>{quote.category}</a></h2>
       <div class="quotes">
         {related.map((q) => <QuoteCard quote={q} />)}
       </div>

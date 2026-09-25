@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import QuoteCard from '../../components/QuoteCard.astro';
-import { authors } from '../../lib/quotes';
+import { authors, link } from '../../lib/quotes';
 
 export function getStaticPaths() {
   return authors.map((a) => ({ params: { slug: a.slug }, props: { author: a } }));
@@ -12,7 +12,7 @@ const { author } = Astro.props;
   <h1>{author.name}</h1>
   <p class="lede">
     {author.quotes.length} saying{author.quotes.length === 1 ? '' : 's'} ·
-    <a href={`/?author=${encodeURIComponent(author.name)}`}>Search only this saint</a>
+    <a href={link(`?author=${encodeURIComponent(author.name)}`)}>Search only this saint</a>
   </p>
   <div class="quotes">
     {author.quotes.map((q) => <QuoteCard quote={q} />)}

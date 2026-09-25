@@ -122,7 +122,7 @@ const situations = [
 </style>
 
 <script>
-  import { quotes, citation, slugify, type Quote } from '../lib/quotes';
+  import { quotes, citation, link, slugify, type Quote } from '../lib/quotes';
   import { createSearch } from '../lib/search';
 
   const PAGE = 30;
@@ -159,14 +159,14 @@ const situations = [
     return `<article class="quote-card">
       <blockquote class="quote-text">${highlight(x.text)}</blockquote>
       <footer class="quote-meta">
-        <a class="quote-author" href="/author/${slugify(x.author)}">${esc(x.author)}</a>
+        <a class="quote-author" href="${link(`author/${slugify(x.author)}`)}">${esc(x.author)}</a>
         <span class="quote-source">${work}${x.source.reference ? `, ${esc(x.source.reference)}` : ''}</span>
       </footer>
       <div class="quote-actions">
-        <a class="chip" href="/category/${slugify(x.category)}">${esc(x.category)}</a>
+        <a class="chip" href="${link(`category/${slugify(x.category)}`)}">${esc(x.category)}</a>
         <span class="spacer"></span>
         <button type="button" class="action copy" data-copy="${esc(`“${x.text}”\n— ${citation(x)}`)}">Copy</button>
-        <a class="action" href="/quote/${x.id}">Share link</a>
+        <a class="action" href="${link(`quote/${x.id}`)}">Share link</a>
       </div>
     </article>`;
   }
@@ -236,7 +236,7 @@ const situations = [
   );
   $('random').addEventListener('click', () => {
     const pick = quotes[Math.floor(Math.random() * quotes.length)];
-    location.href = `/quote/${pick.id}`;
+    location.href = link(`quote/${pick.id}`);
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === '/' && document.activeElement !== q) {

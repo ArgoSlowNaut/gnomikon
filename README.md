@@ -40,7 +40,19 @@ Other commands:
 | `npm run build`    | Validates the quotes, then builds the static site into `dist/`    |
 | `npm run preview`  | Serves the built `dist/` folder to check it before deploying      |
 
-The `dist/` folder can be hosted on any static host, such as GitHub Pages, Netlify, or Cloudflare Pages.
+## Deploying
+
+The site is published with GitHub Pages at **<https://argoslownaut.github.io/gnomikon/>**.
+
+Every push to `main` rebuilds and publishes it automatically, using the workflow in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+Adding quotes is just: edit `data/quotes.json`, commit, push, and the site updates within a minute or two.
+You can watch each deploy in the repo's **Actions** tab. If the quote check fails, the deploy stops and the live site keeps its previous version.
+
+On GitHub the site lives under `/gnomikon/`, so the workflow builds with `BASE_PATH=/gnomikon`.
+Locally that variable isn't set, and the site runs at `/`.
+In code, always build internal links with the `link()` helper from `src/lib/quotes.ts` (e.g. `link('authors')`) rather than writing `/authors`, or the link will break on GitHub Pages.
+
+If you later move to your own domain, or to a host that serves the site at the root (Netlify, Cloudflare Pages), remove `BASE_PATH` from the workflow.
 
 ## How quotes are stored
 
