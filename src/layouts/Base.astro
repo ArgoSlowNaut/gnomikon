@@ -40,6 +40,7 @@ const path = '/' + Astro.url.pathname.slice(import.meta.env.BASE_URL.length).rep
           <a href={link('')} aria-current={path === '/' ? 'page' : undefined}>Search</a>
           <a href={link('categories')} aria-current={path.startsWith('/categor') ? 'page' : undefined}>Topics</a>
           <a href={link('authors')} aria-current={path.startsWith('/author') ? 'page' : undefined}>Saints</a>
+          <a href={link('request')} aria-current={path.startsWith('/request') ? 'page' : undefined}>Request</a>
         </nav>
       </div>
       <div class="meander" aria-hidden="true"></div>

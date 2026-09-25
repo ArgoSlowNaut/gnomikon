@@ -1,0 +1,155 @@
+---
+import Base from '../layouts/Base.astro';
+import { categories } from '../lib/quotes';
+---
+<Base title="Request" description="Suggest a saying to add, or ask for sayings on a topic.">
+  <h1>Requests</h1>
+  <p class="lede">Share a saying you treasure, or tell us what you are searching for.</p>
+
+  <div class="tabs" role="tablist" aria-label="Kind of request">
+    <button type="button" role="tab" id="tab-add" aria-controls="panel-add" aria-selected="true">Add a quote</button>
+    <button type="button" role="tab" id="tab-find" aria-controls="panel-find" aria-selected="false">Ask for quotes</button>
+  </div>
+
+  <form id="panel-add" class="panel" role="tabpanel" aria-labelledby="tab-add">
+    <p class="intro">Have a saying that belongs here? Copy it exactly as printed in your source.</p>
+    <label>
+      <span>Quote <b>required</b></span>
+      <textarea name="text" rows="5" required placeholder="The words exactly as printed…"></textarea>
+    </label>
+    <div class="row">
+      <label>
+        <span>Saint or author <b>required</b></span>
+        <input name="author" required placeholder="St. John Chrysostom" />
+      </label>
+      <label>
+        <span>Topic</span>
+        <input name="category" list="topics" placeholder="Humility, Prayer…" />
+      </label>
+    </div>
+    <div class="row">
+      <label>
+        <span>Source <b>required</b></span>
+        <input name="work" required placeholder="Book, homily, or letter" />
+      </label>
+      <label>
+        <span>Where in the source</span>
+        <input name="reference" placeholder="Chapter, section, or page" />
+      </label>
+    </div>
+    <label>
+      <span>Link to the source online</span>
+      <input name="url" type="url" placeholder="https://" />
+    </label>
+    <label>
+      <span>Anything else</span>
+      <textarea name="notes" rows="3" placeholder="The translation you used, why this saying matters to you…"></textarea>
+    </label>
+    <button type="submit" class="submit">Continue to send</button>
+  </form>
+
+  <form id="panel-find" class="panel" role="tabpanel" aria-labelledby="tab-find" hidden>
+    <p class="intro">Looking for words on something in particular? Tell us, and we will seek out sayings of the saints on it.</p>
+    <label>
+      <span>Topic <b>required</b></span>
+      <input name="topic" required placeholder="Raising children, patience in illness…" />
+    </label>
+    <label>
+      <span>More about what you are looking for</span>
+      <textarea name="details" rows="4" placeholder="The situation, or the kind of saying that would help."></textarea>
+    </label>
+    <label>
+      <span>Particular saints, if any</span>
+      <input name="saints" placeholder="St. Paisios, St. Macrina…" />
+    </label>
+    <button type="submit" class="submit">Continue to send</button>
+  </form>
+
+  <datalist id="topics">
+    {categories.map((c) => <option value={c.name} />)}
+  </datalist>
+
+  <p class="how">
+    Requests are kept on GitHub. When you continue, a GitHub page opens with your request already filled in; sign in
+    (a free account) and press <em>Create</em> to send it. You will be notified there when it is answered.
+  </p>
+</Base>
+
+<style>
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--rule); margin-bottom: 20px; }
+  [role='tab'] {
+    font: inherit; font-size: 1.1rem; font-variant: small-caps; letter-spacing: 0.05em;
+    background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    padding: 8px 14px; color: var(--muted); cursor: pointer;
+  }
+  [role='tab']:hover { color: var(--ink); }
+  [role='tab'][aria-selected='true'] { color: var(--lapis); border-bottom-color: var(--gold); }
+
+  .panel {
+    display: grid; gap: 16px; background: var(--paper); border: 1px solid var(--rule);
+    outline: 1px solid var(--gold-soft); outline-offset: -7px; border-radius: 3px; padding: 28px 30px;
+  }
+  .intro { margin: 0; font-style: italic; color: var(--muted); }
+  .row { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+  label { display: grid; gap: 4px; }
+  label span { font-variant: small-caps; letter-spacing: 0.04em; color: var(--ink); }
+  label b { font-weight: 400; font-size: 0.8rem; color: var(--cinnabar); font-variant: normal; font-style: italic; margin-left: 6px; }
+  input, textarea {
+    font: inherit; font-size: 1.05rem; padding: 9px 12px; border-radius: 4px;
+    border: 1px solid var(--rule); background: var(--bg); color: var(--ink); width: 100%;
+  }
+  textarea { resize: vertical; line-height: 1.5; }
+  input::placeholder, textarea::placeholder { color: var(--muted); font-style: italic; opacity: 0.8; }
+  input:focus, textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .submit {
+    justify-self: start; font: inherit; font-size: 1.05rem; cursor: pointer;
+    padding: 9px 20px; border-radius: 4px; border: 1px solid var(--lapis);
+    background: var(--lapis); color: var(--paper);
+  }
+  .submit:hover { background: var(--cinnabar); border-color: var(--cinnabar); }
+  .how { color: var(--muted); font-size: 0.95rem; margin-top: 20px; }
+
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 1fr; }
+    .panel { padding: 22px 18px; }
+  }
+</style>
+
+<script>
+  import { newIssueUrl } from '../lib/site';
+
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+  const addForm = document.getElementById('panel-add') as HTMLFormElement;
+  const findForm = document.getElementById('panel-find') as HTMLFormElement;
+
+  function show(which: 'add' | 'find') {
+    tabs.forEach((t) => t.setAttribute('aria-selected', String(t.id === `tab-${which}`)));
+    addForm.hidden = which !== 'add';
+    findForm.hidden = which !== 'find';
+  }
+  tabs.forEach((t) => t.addEventListener('click', () => show(t.id === 'tab-add' ? 'add' : 'find')));
+
+  // /request?type=find&topic=... opens the second form pre-filled (used by the
+  // "ask for quotes on this" link when a search finds nothing).
+  const params = new URLSearchParams(location.search);
+  if (params.get('type') === 'find') {
+    show('find');
+    (findForm.elements.namedItem('topic') as HTMLInputElement).value = params.get('topic') ?? '';
+  }
+
+  const values = (form: HTMLFormElement) =>
+    Object.fromEntries([...new FormData(form)].map(([k, v]) => [k, String(v)]));
+
+  addForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = values(addForm);
+    const title = `Add quote: ${v.author}, ${v.text.slice(0, 50)}${v.text.length > 50 ? '…' : ''}`;
+    window.open(newIssueUrl('add-quote.yml', title, v), '_blank', 'noopener');
+  });
+
+  findForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = values(findForm);
+    window.open(newIssueUrl('find-quotes.yml', `Quotes on: ${v.topic}`, v), '_blank', 'noopener');
+  });
+</script>

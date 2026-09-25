@@ -1,0 +1,51 @@
+name: Add a quote
+description: Suggest a saying you already have, with its source.
+title: "Add quote: "
+labels: ["add-quote"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a saying. Please copy it exactly as printed in your source.
+  - type: textarea
+    id: text
+    attributes:
+      label: Quote
+      description: The words exactly as printed. Use [brackets] for words you add and … for words you leave out.
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Saint or author
+      placeholder: St. John Chrysostom
+    validations:
+      required: true
+  - type: input
+    id: work
+    attributes:
+      label: Source (book, homily, or letter)
+      placeholder: Homilies on the Gospel of Matthew
+    validations:
+      required: true
+  - type: input
+    id: reference
+    attributes:
+      label: Where in the source
+      description: Chapter, homily, section, or page.
+      placeholder: Homily 3, §7
+  - type: input
+    id: url
+    attributes:
+      label: Link to the source online
+      placeholder: https://
+  - type: input
+    id: category
+    attributes:
+      label: Topic
+      placeholder: Humility, Prayer, Repentance…
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: The translation you used, why this saying matters to you, etc.

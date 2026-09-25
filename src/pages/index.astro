@@ -192,7 +192,8 @@ const situations = [
       ? `All ${n} sayings in the collection`
       : n ? `${n} saying${n === 1 ? '' : 's'} found` : '';
     if (active && !n) {
-      results.innerHTML = `<p class="empty">Nothing found yet. The collection is still growing.<br>Try a simpler word, or clear the filters.</p>`;
+      const ask = link(`request?type=find&topic=${encodeURIComponent(q.value.trim())}`);
+      results.innerHTML = `<p class="empty">Nothing found yet. The collection is still growing.<br>Try a simpler word, or clear the filters.<br><a href="${esc(ask)}">Ask for sayings on this</a></p>`;
     }
     clear.hidden = !active;
     const word = q.value.trim().toLowerCase();

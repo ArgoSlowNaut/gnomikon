@@ -94,6 +94,25 @@ If you change the start of a quote's text or its author, its link changes too, s
 It catches invalid JSON (usually a missing comma), missing required fields, misspelled field names, duplicate quotes, and badly formatted URLs.
 `npm run build` runs the same check and stops if it fails.
 
+## Requests from visitors
+
+The **Request** page (`/request`) has two forms:
+
+- **Add a quote:** someone who already has a saying sends it with its author and source.
+- **Ask for quotes:** someone asks for sayings on a topic, e.g. "raising children". A search that finds nothing also offers an "Ask for sayings on this" link, with the topic filled in.
+
+There is no server or database. When a visitor presses *Continue to send*, GitHub opens with their request already filled in, using the issue forms in [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/). They sign in with a free GitHub account and press *Create*.
+Each request becomes an issue in this repo, labelled `add-quote` or `quote-request`.
+
+To handle them, open the repo's **Issues** tab:
+
+1. For an `add-quote` issue, check the quote against its source, add it to `data/quotes.json`, and push. If the commit message says `Closes #12` (the issue's number), GitHub closes the issue automatically when you push.
+2. For a `quote-request` issue, reply in the issue with what you found, or add the quotes and close it. The visitor is notified either way.
+
+The fields on the site's forms and in the issue forms are matched by name (`text`, `author`, `work`, and so on).
+If you rename or add a field, change it in both `src/pages/request.astro` and the matching `.github/ISSUE_TEMPLATE/*.yml` file.
+The repo address is set once, in `src/lib/site.ts`.
+
 ### Improving search
 
 Search maps everyday words to the older words the Fathers use.

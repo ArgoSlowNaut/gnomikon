@@ -1,0 +1,26 @@
+name: Ask for quotes on a topic
+description: Ask for sayings about something you are looking for.
+title: "Quotes on: "
+labels: ["quote-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us what you are looking for, and we will look for sayings of the saints on it.
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      placeholder: Raising children, patience in illness, anger…
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: More about what you are looking for
+      description: The situation, or the kind of saying that would help.
+  - type: input
+    id: saints
+    attributes:
+      label: Particular saints, if any
+      placeholder: St. Paisios, St. Macrina…
